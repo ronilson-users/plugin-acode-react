@@ -1,6 +1,8 @@
 
 
 
+
+
 import plugin from '../plugin.json';
 import LRUCache from './cache.js';
 import { snippets } from './snippets.js';
@@ -24,12 +26,16 @@ class AcodePluginAutoImport {
 
  getLastWord(editor) {
   const cursor = editor.getCursorPosition();
+  
   const line = editor.session.getLine(cursor.row);
+  
   return line.substr(0, cursor.column).split(/\s+/).pop();
+  
  }
 
  async archivePathsInCache() {
   const fileList = acode.require('fileList');
+  
   const list = await fileList();
 
   list.forEach(item => {
@@ -38,19 +44,24 @@ class AcodePluginAutoImport {
     path: item.path,
    });
 
-   //	console.log('item', item.path);
+   	console.log('item', item.path);
 
   });
  }
 
  getCompletions(editor, session, pos, prefix, callback) {
   const cursor = editor.getCursorPosition();
+  
   const line = session.getLine(cursor.row);
+  
   const lastWord = this.getLastWord(editor);
+  
   const matchedSnippets = snippets.filter(snippet => snippet.prefix.startsWith(lastWord));
 
   if (matchedSnippets.length > 0 && matchedSnippets[0].prefix !== lastWord) {
+   
    const suggestions = matchedSnippets.map(snippet => {
+    
     const structureSnippets = {
      caption: snippet.prefix,
      snippet: snippet.snippet,
@@ -66,6 +77,7 @@ class AcodePluginAutoImport {
       ...structureSnippets,
       icon: 'icon react-snippet-icon',
      };
+     
     } else {
      return structureSnippets;
     }
@@ -186,6 +198,7 @@ white-space: pre-wrap;
   // Retorna ambos os diretórios ou null se não encontrados
   return {
    directoryForTagName: cachedItem ? cachedItem.path : null,
+   
    directoryForCurrentFile: currentItem ? currentItem.path : null,
   };
  }
@@ -197,9 +210,20 @@ white-space: pre-wrap;
    const relativePath = this.calculateRelativePath(directory.directoryForCurrentFile, directory.directoryForTagName);
 
 
+
+console.log('directoryForCurrentFile', directory.directoryForCurrentFile);
+
+console.log('directoryForTagName',  directory.directoryForTagName);
+
+console.log('relativePath',  relativePath);
+
+
    // Extrair extensão do arquivo
    const extensionIndex = tagName.lastIndexOf('.');
+   
    const extension = tagName.substring(extensionIndex);
+   
+   
 
    // Remover extensão do tagName
    const tagNameWithoutExtension = tagName.substring(0, extensionIndex);
@@ -246,35 +270,41 @@ window.toast("The import was created at the top ☝️ ", 2000)
   };
  }
 
- calculateRelativePath(currentDirectory, targetDirectory) {
-  const currentPathParts = currentDirectory.split('/');
-  const targetPathParts = targetDirectory.split('/');
+
+ // Function to calculate relative path between directories
+calculateRelativePath(currentDirectory, targetDirectory) {
+  const currentPathParts = currentDirectory.split('/').filter(part => part !== ''); // Dividing the current directory into parts and removing empty parts
+  const targetPathParts = targetDirectory.split('/').filter(part => part !== ''); // Dividing the target directory into parts and removing empty parts
 
   let relativePath = '';
+  let commonPathLength = 0;
 
-  // Encontra o índice do primeiro diretório diferente
-  let i = 0;
-  while (i < currentPathParts.length && i < targetPathParts.length && currentPathParts[i] === targetPathParts[i]) {
-   i++;
+  // Finding the length of the common path
+  for (let i = 0; i < currentPathParts.length && i < targetPathParts.length; i++) {
+    if (currentPathParts[i] === targetPathParts[i]) {
+      commonPathLength++;
+    } else {
+      break;
+    }
   }
 
-  // Adiciona '../' para cada diretório restante no diretório atual
-  for (let j = i; j < currentPathParts.length; j++) {
-   relativePath += './';
+  // Adding './' or '../' for each remaining directory in the current directory
+  for (let i = commonPathLength; i < currentPathParts.length; i++) {
+    relativePath += './';
   }
 
-  // Adiciona os diretórios restantes no diretório de destino
-  for (let k = i; k < targetPathParts.length; k++) {
-   relativePath += targetPathParts[k] + '/';
+  // Adding the remaining directories in the target directory
+  for (let i = commonPathLength; i < targetPathParts.length; i++) {
+    relativePath += targetPathParts[i] + '/';
   }
 
-  // Remove a última barra '/' se existir
+  // Removing the last '/' if it exists
   if (relativePath.endsWith('/')) {
-   relativePath = relativePath.slice(0, -1);
+    relativePath = relativePath.slice(0, -1);
   }
 
   return relativePath;
- }
+}
 
  async destroy() {
   // Adicione sua lógica de limpeza aqui, se necessário
@@ -284,6 +314,7 @@ window.toast("The import was created at the top ☝️ ", 2000)
 
 if (window.acode) {
  const acodePlugin = new AcodePluginAutoImport();
+ 
  acode.setPluginInit(plugin.id, async (baseUrl, $page, { cacheFileUrl, cacheFile }) => {
   if (!baseUrl.endsWith('/')) {
    baseUrl += '/';
@@ -296,5 +327,3 @@ if (window.acode) {
  });
 }
 
-
-<cache />

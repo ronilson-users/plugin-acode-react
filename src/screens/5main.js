@@ -1,3 +1,6 @@
+import Box from '././component/Box.js';
+<Box.js/>
+
 
 
 // testando
