@@ -19,12 +19,6 @@ export const snippets = [
   description: 'Import React Native',
  },
 
- {
-  prefix: 'imt-import-text',
-  snippet: "import { Text } from 'react-native'",
-  type: 'snippet RN',
-  description: 'Import Text component in React Native',
- },
 //imort 
  {
   prefix: 'imc-import-components',
@@ -47,7 +41,7 @@ export const snippets = [
  },
  
  {
-  prefix: 'rn-ExportDefault',
+  prefix: 'rn-export-default',
   snippet: `import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -403,7 +397,7 @@ $1: {
  // View
  {
   prefix: 'View',
-  snippet: '<View style={$1}>\n  $2\n</View>',
+  snippet: '<View $1>\n  $2\n</View>',
   type: 'snippet RN',
   description: 'Criar View em React Native',
  },

@@ -1,23 +1,30 @@
 
-
-
+ 
 
 
 import plugin from '../plugin.json';
 import LRUCache from './cache.js';
 import { snippets } from './snippets.js';
 
+
+
+// const fs = acode.require("fs");
+// const toast = acode.require("toast");
+// const confirm = acode.require("confirm");
+
+
 const editor = editorManager.editor;
 const { activeFile } = editorManager;
 const { snippetManager } = ace.require('ace/snippets');
 
-class AcodePluginAutoImport {
+class AcodePluginRN {
  constructor() {
   this.directoryCache = new LRUCache();
   this.editor = editor;
   this.snippetManager = snippetManager;
   this.initializeSnippetInsertion();
   this.archivePathsInCache();
+
  }
 
  initializeSnippetInsertion() {
@@ -26,16 +33,16 @@ class AcodePluginAutoImport {
 
  getLastWord(editor) {
   const cursor = editor.getCursorPosition();
-  
+
   const line = editor.session.getLine(cursor.row);
-  
+
   return line.substr(0, cursor.column).split(/\s+/).pop();
-  
+
  }
 
  async archivePathsInCache() {
   const fileList = acode.require('fileList');
-  
+
   const list = await fileList();
 
   list.forEach(item => {
@@ -44,24 +51,24 @@ class AcodePluginAutoImport {
     path: item.path,
    });
 
-   	console.log('item', item.path);
+   console.log('item', item.path);
 
   });
  }
 
  getCompletions(editor, session, pos, prefix, callback) {
   const cursor = editor.getCursorPosition();
-  
+
   const line = session.getLine(cursor.row);
-  
+
   const lastWord = this.getLastWord(editor);
-  
+
   const matchedSnippets = snippets.filter(snippet => snippet.prefix.startsWith(lastWord));
 
   if (matchedSnippets.length > 0 && matchedSnippets[0].prefix !== lastWord) {
-   
+
    const suggestions = matchedSnippets.map(snippet => {
-    
+
     const structureSnippets = {
      caption: snippet.prefix,
      snippet: snippet.snippet,
@@ -77,7 +84,7 @@ class AcodePluginAutoImport {
       ...structureSnippets,
       icon: 'icon react-snippet-icon',
      };
-     
+
     } else {
      return structureSnippets;
     }
@@ -198,12 +205,12 @@ white-space: pre-wrap;
   // Retorna ambos os diretórios ou null se não encontrados
   return {
    directoryForTagName: cachedItem ? cachedItem.path : null,
-   
+
    directoryForCurrentFile: currentItem ? currentItem.path : null,
   };
  }
 
- async importIntellisense(tagName, directory) {
+ importIntellisense(tagName, directory) {
   try {
 
    // Calcular o caminho relativo
@@ -211,41 +218,41 @@ white-space: pre-wrap;
 
 
 
-console.log('directoryForCurrentFile', directory.directoryForCurrentFile);
+   console.log('directoryForCurrentFile', directory.directoryForCurrentFile);
 
-console.log('directoryForTagName',  directory.directoryForTagName);
+   console.log('directoryForTagName', directory.directoryForTagName);
 
-console.log('relativePath',  relativePath);
+   console.log('relativePath', relativePath);
 
 
    // Extrair extensão do arquivo
    const extensionIndex = tagName.lastIndexOf('.');
-   
+
    const extension = tagName.substring(extensionIndex);
-   
-   
+
+
 
    // Remover extensão do tagName
    const tagNameWithoutExtension = tagName.substring(0, extensionIndex);
 
    // Criar declaração de importação sem a extensão
    const importStatement = `import ${tagNameWithoutExtension} from '${relativePath}';`;
-   
+
    const code = this.editor.session.getValue();
-   
+
    const importRegex = new RegExp(`import\\s+${tagNameWithoutExtension}\\s+from\\s+'${relativePath}'`);
-   
+
    if (!importRegex.test(code)) {
     const insertionPosition = this.findInsertionPosition();
-    
+
     this.editor.session.insert(insertionPosition, `${importStatement}\n`);
-    
+
     this.closeTag();
-    
-window.toast("The import was created at the top ☝️ ", 2000)
+
+    window.toast("The import was created at the top ☝️ ", 2000)
 
    }
-   
+
   } catch (error) {
    console.error('Erro no importIntellisense:', error);
    window.toast("Component not found", 4000)
@@ -253,10 +260,11 @@ window.toast("The import was created at the top ☝️ ", 2000)
   }
  }
 
- closeTag(editor ) {
-  
+ closeTag(editor) {
+
   // Obter a posição do cursor atual
   const cp = this.editor.getCursorPosition();
+
 
   // Inserir o fechamento da tag na mesma linha do cursor
   this.editor.session.insert(cp, `/>\n`);
@@ -272,39 +280,66 @@ window.toast("The import was created at the top ☝️ ", 2000)
 
 
  // Function to calculate relative path between directories
-calculateRelativePath(currentDirectory, targetDirectory) {
-  const currentPathParts = currentDirectory.split('/').filter(part => part !== ''); // Dividing the current directory into parts and removing empty parts
-  const targetPathParts = targetDirectory.split('/').filter(part => part !== ''); // Dividing the target directory into parts and removing empty parts
-
-  let relativePath = '';
-  let commonPathLength = 0;
-
-  // Finding the length of the common path
-  for (let i = 0; i < currentPathParts.length && i < targetPathParts.length; i++) {
-    if (currentPathParts[i] === targetPathParts[i]) {
+   calculateRelativePath(currentDirectory, targetDirectory) {
+    // Divida as strings em arrays usando o separador '/'
+    const currentPathParts = currentDirectory.split('/');
+    const targetPathParts = targetDirectory.split('/');
+  
+    console.log('currentPathParts:', currentPathParts);
+    console.log('targetPathParts:', targetPathParts);
+  
+    // Encontra o comprimento do caminho comum
+    let commonPathLength = 0;
+    while (currentPathParts[commonPathLength] === targetPathParts[commonPathLength]) {
       commonPathLength++;
-    } else {
-      break;
     }
+    console.log('commonPathLength:', commonPathLength);
+  
+    let relativePath = '';
+    console.log('relativePath:', relativePath);
+  
+    // Se os diretórios tiverem o mesmo caminho até o último diretório comum
+    if (commonPathLength === currentPathParts.length && commonPathLength === targetPathParts.length - 1) {
+      relativePath = './' + targetPathParts[commonPathLength];
+      
+      
+      console.log('relativePath ./ +:', relativePath);
+      
+    } else {
+     
+      if (commonPathLength === currentPathParts.length && !currentPathParts.every((part, index) => part === targetPathParts[index])) {
+        relativePath = './' + targetPathParts[commonPathLength];
+        
+        console.log('relativePath ./ +:', relativePath);
+        
+      } else {
+        // Adiciona '../' para cada diretório restante no diretório atual
+        for (let i = commonPathLength; i < currentPathParts.length - 1; i++) {
+         
+          relativePath += '../';
+          
+          console.log('relativePath ../ :', relativePath);
+        }
+  
+        // Adiciona os diretórios restantes no diretório de destino
+        for (let i = commonPathLength; i < targetPathParts.length; i++) {
+         
+          relativePath += targetPathParts[i] + '/';
+        }
+  
+        // Remove a barra final se existir
+        if (relativePath.endsWith('/')) {
+          relativePath = relativePath.slice(0, -1);
+        }
+      }
+    }
+  
+    console.log('relativePath fim:', relativePath);
+  
+    return relativePath;
   }
 
-  // Adding './' or '../' for each remaining directory in the current directory
-  for (let i = commonPathLength; i < currentPathParts.length; i++) {
-    relativePath += './';
-  }
 
-  // Adding the remaining directories in the target directory
-  for (let i = commonPathLength; i < targetPathParts.length; i++) {
-    relativePath += targetPathParts[i] + '/';
-  }
-
-  // Removing the last '/' if it exists
-  if (relativePath.endsWith('/')) {
-    relativePath = relativePath.slice(0, -1);
-  }
-
-  return relativePath;
-}
 
  async destroy() {
   // Adicione sua lógica de limpeza aqui, se necessário
@@ -313,8 +348,8 @@ calculateRelativePath(currentDirectory, targetDirectory) {
 }
 
 if (window.acode) {
- const acodePlugin = new AcodePluginAutoImport();
- 
+ const acodePlugin = new AcodePluginRN();
+
  acode.setPluginInit(plugin.id, async (baseUrl, $page, { cacheFileUrl, cacheFile }) => {
   if (!baseUrl.endsWith('/')) {
    baseUrl += '/';
