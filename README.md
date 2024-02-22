@@ -94,4 +94,5 @@ Contribuições para novos snippets ou melhorias são bem-vindas! Sinta-se à vo
 
 This plugin is licensed under the [MIT License](LICENSE).
 Este plugin está sob a MIT Consulte o arquivo LICENSE para obter mais detalhes.
+
 # plugin-acode-react

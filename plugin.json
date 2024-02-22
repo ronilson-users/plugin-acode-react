@@ -1,4 +1,3 @@
-
 {
 	"id": "ronilsonRsj.plugin.RN",
 	"name": "Acode Snippets React Native",
@@ -10,7 +9,6 @@
 	"minVersionCode": 290,
 	"price": 0,
 	"author": {
-	 
 		"name": "Ronilson Rsj",
 		"email": "ronilson.stos@gmail.com",
 		"github": "ronilson-users"
