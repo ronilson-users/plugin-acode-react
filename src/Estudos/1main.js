@@ -1,10 +1,10 @@
 
-
 import plugin from '../plugin.json';
 import LRUCache from './cache.js';
 import { snippets } from './snippets.js';
 
 
+const toast = acode.require("toast");
 const editor = editorManager.editor;
 const { activeFile } = editorManager;
 const { snippetManager } = ace.require('ace/snippets');
@@ -74,7 +74,7 @@ docHTML: snippet.description || '',
 if (typeof extraSyntaxHighlightsInstalled !== 'undefined' && extraSyntaxHighlightsInstalled) {
 return {
 ...contentSnippets,
-icon: 'icon ace_completion-icon ace_class',
+icon: 'icon react-snippet-icon',
 };
 
 } else {
@@ -91,10 +91,10 @@ return callback(null, []);
 async init() {
 
 // Adiciona o estilo para ace_tooltip
-const style = document.createElement('style');
+const tipsbox = document.createElement('style');
 
-style.id = 'helpDescription';
-style.innerHTML = `
+tipsbox.id = 'helpDescription';
+tipsbox.innerHTML = `
 .ace_tooltip.ace_doc-tooltip {
 display: flex !important;
 background-color: var(--secondary-color);
@@ -103,7 +103,7 @@ max-width: 78%;
 white-space: pre-wrap;
 }
 `;
-document.head.append(style);
+document.head.append(tipsbox);
 
 
 
@@ -111,23 +111,7 @@ this.editor.on('change', this.handleCodeChange.bind(this)); // Adiciona um ouvin
 }
 
 async handleCodeChange(e) {
-let insertedLines = [];
-let removedLines = [];
-
- 
- 
- console.log('event', e);
-
-    if (e.action === "insert") {
-        insertedLines.push(...e.lines);
-    } else if (e.action === "remove") {
-        removedLines.push(...e.lines);
-    }
-
-    // Você pode fazer mais com as linhas inseridas e removidas aqui, como gerar um diff completo.
-console.log(insertedLines);
-console.log(removedLines);
-
+// console.log('event' , e);
 
 
 // Lógica para capturar a abertura da tag `<` e observar o que vem depois
@@ -140,7 +124,6 @@ const openCol = this.findTagOpening(mainRow, cp.column);
 
 if (openCol !== -1) {
 const tagName = this.extractTag(mainRow, openCol);
-
 
 const contentAfterOpeningTag = mainRow.substring(openCol + 1);
 
@@ -179,7 +162,7 @@ for (let i = openCol + 1; i < row.length; i++) {
 if (row[i] === ' ' || row[i] === '>') {
 if (closeTag) {
 tagName += '>';
-console.log('tag fechada');
+console.log('tag fechada')
 
 }
 break;
@@ -197,12 +180,11 @@ try {
 const { activeFile } = editorManager;
 const currentFileName = activeFile.filename || '';
 const dir = activeFile.uri || '';
-console.log('dir', dir);
+console.log(dir);
 
 
 
 const cachedItem = await this.directoryCache.get(tagName);
-
 const currentItem = await this.directoryCache.get(currentFileName);
 
 if (cachedItem) {
@@ -266,16 +248,15 @@ this.editor.session.insert(insertionPosition, `${importStatement}\n`);
 
 this.closeTag();
 
-window.toast("The import was created at the top ☝️ ", 3000);
+window.toast("The import was created at the top ☝️ ", 3000)
 
 }
 
 } catch (error) {
 console.error('Erro no importIntellisense:', error);
+window.toast("Component not found", 4000)
+// se o arquivo nao exitir cria ele 
 
-// window.toast("Component not found", 4000):
-//se o arquivo nao exitir cria ele 
-// 
 
 
 this.archivePathsInCache();
@@ -298,6 +279,7 @@ row: 0,
 column: 0,
 };
 }
+
 
 
 // Resolve o caminho relativo com base em um caminho de referência dado
@@ -326,7 +308,6 @@ relativePath += '../';
 }
 
 // Adiciona os diretórios restantes no diretório de destino
-
 // Verifica se relativePath já possui algum prefixo ('./' ou '../')
 if (!relativePath.startsWith('./') && !relativePath.startsWith('../')) {
 // Se não tiver nenhum prefixo, adiciona './'

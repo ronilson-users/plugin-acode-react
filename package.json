@@ -1,7 +1,7 @@
 {
 	"name": "Plugin-Acode-React",
 	"version": "1.0.3",
-	"description": "Plugin Acode React Native ",
+	"description": "Plugin Acode React Native",
 	"main": "dist/main.js",
 	"scripts": {
 		"prettier": "prettier --write .",
@@ -43,5 +43,8 @@
 		"prettier": "^3.0.3",
 		"webpack": "^5.89.0",
 		"webpack-cli": "^5.1.4"
+	},
+	"dependencies": {
+		"is-extendable": "^1.0.1"
 	}
 }
