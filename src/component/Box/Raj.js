@@ -1,8 +1,8 @@
-import Box from '../Box/Box.js';
+import Box from './Box.js';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function App() {
+export default function Raj() {
 	const styles = StyleSheet.create({
 		container: {
 			// Estilos aqui
