@@ -1,3 +1,4 @@
+import Box from '../Box/Box.js';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -11,7 +12,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* Conteúdo da View aqui */}
-     <cache.js
+      
+
+      
+
+
+
+
+    
     </View>
   );
 }
