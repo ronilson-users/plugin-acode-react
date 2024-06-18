@@ -1,6 +1,6 @@
 {
-	"id": "plugin.snippets.rn",
-	"name": "Acode Snippets React Native",
+	"id": "snippets.react.native",
+	"name": "Snippets React Native",
 	"main": "dist/main.js",
 	"version": "1.0.3",
 	"readme": "readme.md",

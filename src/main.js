@@ -5,262 +5,289 @@ const editor = editorManager.editor;
 const { snippetManager } = ace.require('ace/snippets');
 
 class AcodePluginRN {
-	constructor() {
-		this.editor = editor;
-		this.snippetManager = snippetManager;
-		this.directoryPaths = {};
-		this.initializeSnippetInsertion();
-	}
+constructor() {
+this.editor = editor;
+this.snippetManager = snippetManager;
+this.directoryPaths = {};
+this.insertSnippets();
+}
 
-	initializeSnippetInsertion() {
-		this.editor.completers = [this];
-	}
+insertSnippets() {
+this.editor.completers = [this];
+}
 
-	getLastWord(editor) {
-		const cursor = editor.getCursorPosition();
-		const line = editor.session.getLine(cursor.row);
-		return line.substr(0, cursor.column).split(/\s+/).pop();
-	}
+getLastWord(editor) {
+const cursor = editor.getCursorPosition();
+const line = editor.session.getLine(cursor.row);
+return line.substr(0, cursor.column).split(/\s+/).pop();
+}
 
-	async getPathsRoot() {
-		try {
-			const fileList = acode.require('fileList');
-			const list = await fileList();
+async getRootFilesPaths() {
+try {
+const fileList = acode.require('fileList');
+const list = await fileList();
 
-			for (const item of list) {
-				this.directoryPaths[item.name] = {
-					url: item.url,
-					path: item.path,
-				};
-			}
-		} catch (error) {
-			console.error('Erro ao arquivar caminhos :', error);
-		}
-	}
+for (const item of list) {
+this.directoryPaths[item.name] = {
+url: item.url,
+path: item.path,
+};
+}
 
-	getCompletions(editor, session, pos, prefix, callback) {
-		const cursor = editor.getCursorPosition();
-		const line = session.getLine(cursor.row);
-		const lastWord = this.getLastWord(editor);
-		const matchedSnippets = snippets.filter(snippet => snippet.prefix.startsWith(lastWord));
+console.log('Directory Paths:', this.directoryPaths); // Log para depuração
+} catch (error) {
+console.error('Erro ao arquivar caminhos:', error);
+}
+}
 
-		if (matchedSnippets.length > 0 && matchedSnippets[0].prefix !== lastWord) {
-			const suggestions = matchedSnippets.map(snippet => ({
-				caption: snippet.prefix,
-				snippet: snippet.snippet,
-				meta: snippet.type,
-				value: snippet.snippet,
-				score: 600 || 0,
-				type: 'snippet',
-				docHTML: snippet.description || '',
-			}));
+getCompletions(editor, session, pos, prefix, callback) {
+const cursor = editor.getCursorPosition();
+const line = session.getLine(cursor.row);
+const lastWord = this.getLastWord(editor);
+const matchedSnippets = snippets.filter(snippet => snippet.prefix.startsWith(lastWord));
 
-			if (typeof extraSyntaxHighlightsInstalled !== 'undefined' && extraSyntaxHighlightsInstalled) {
-				suggestions.forEach(suggestion => (suggestion.icon = 'icon ace_completion-icon ace_class'));
-			}
+if (matchedSnippets.length > 0 && matchedSnippets[0].prefix !== lastWord) {
+const suggestions = matchedSnippets.map(snippet => ({
+caption: snippet.prefix,
+// body: snippet.body,
+snippet: snippet.snippet,
+meta: snippet.type,
+value: snippet.snippet,
+// score: snippet.score !== undefined ? snippet.score: 600,
+type: 'snippet',
+docHTML: snippet.description || '',
+}));
 
-			return callback(null, suggestions);
-		} else {
-			return callback(null, []);
-		}
-	}
+if (typeof extraSyntaxHighlightsInstalled !== 'undefined' && extraSyntaxHighlightsInstalled) {
+suggestions.forEach(suggestion => (suggestion.icon = 'icon ace_completion-icon ace_class'));
+}
 
-	async init() {
-		const style = document.createElement('style');
-		style.id = 'helpDescription';
-		style.innerHTML = `
-      .ace_tooltip.ace_doc-tooltip {
-        display: flex !important;
-        background-color: var(--secondary-color);
-        color: var(--secondary-text-color);
-        max-width: 78%;
-        white-space: pre-wrap;
-      }
-    `;
-		document.head.append(style);
-		this.editor.on('change', this.handleCodeChange.bind(this));
-		await this.getPathsRoot(); // Chame o método para arquivar os caminhos
-	}
+return callback(null, suggestions);
+} else {
+return callback(null, []);
+}
+}
 
-	async handleCodeChange(e) {
-		const session = this.editor.session;
-		const cp = this.editor.getCursorPosition();
-		const mainRow = session.getValue().split('\n')[cp.row];
-		const openCol = this.findTagOpening(mainRow, cp.column);
+async init() {
+const style = document.createElement('style');
+style.id = 'helpDescription';
+style.innerHTML = `
+.ace_tooltip.ace_doc-tooltip {
+display: flex !important;
+background-color: var(--secondary-color);
+color: var(--secondary-text-color);
+max-width: 78%;
+white-space: pre-wrap;
+}
+`;
+document.head.append(style);
+this.editor.on('change', this.handleCodeChange.bind(this));
+await this.getRootFilesPaths(); // Chame o método para arquivar os caminhos
+}
 
-		if (openCol !== -1) {
-			const tagName = this.extractTag(mainRow, openCol);
-			const componentCache = await this.findTagNameCachePath(tagName);
+async handleCodeChange(e) {
+const session = this.editor.session;
+const cp = this.editor.getCursorPosition();
+const mainRow = session.getValue().split('\n')[cp.row];
+const openCol = this.findTagOpening(mainRow, cp.column);
 
-			if (componentCache && componentCache.directoryForTagName) {
-				this.importIntellisense(tagName, componentCache);
-			}
-		}
-	}
+if (openCol !== -1) {
+const tagName = this.extractTag(mainRow, openCol);
+console.log('Tag Name:', tagName); // Log para depuração
+await this.getRootFilesPaths(); // Certifique-se de que os caminhos estão atualizados antes de continuar
+const componentCache = await this.findTagNamePaths(tagName);
 
-	findTagOpening(row, column) {
-		for (let n = column; n >= 0; n--) {
-			if (row[n] === '<') {
-				return n;
-			}
-		}
-		return -1;
-	}
+if (componentCache && componentCache.directoryForTagName) {
+await this.importIntellisense(tagName, componentCache);
+}
+}
+}
 
-	extractTag(row, openCol) {
-		let tagName = '';
-		let closeTag = false;
+findTagOpening(row, column) {
+for (let n = column; n >= 0; n--) {
+if (row[n] === '<') {
+return n;
+}
+}
+return -1;
+}
 
-		for (let i = openCol + 1; i < row.length; i++) {
-			if (row[i] === ' ' || row[i] === '>') {
-				if (closeTag) {
-					tagName += '>';
-				}
-				break;
-			}
-			if (row[i] === '<') {
-				closeTag = true;
-			}
-			tagName += row[i];
-		}
-		return tagName;
-	}
+extractTag(row, openCol) {
+let tagName = '';
+let closeTag = false;
 
-	async findTagNameCachePath(tagName) {
-		try {
-			const { activeFile } = editorManager;
-			const currentFileName = activeFile.filename || '';
-			const dir = activeFile.uri || '';
+for (let i = openCol + 1; i < row.length; i++) {
+if (row[i] === ' ' || row[i] === '>') {
+if (closeTag) {
+tagName += '>';
+}
+break;
+}
+if (row[i] === '<') {
+closeTag = true;
+}
+tagName += row[i];
+}
+return tagName;
+}
 
-			const targetPath = this.directoryPaths[tagName];
-			const currentFilePath = this.directoryPaths[currentFileName];
+async findTagNamePaths(tagName) {
+  try {
+    const { activeFile } = editorManager;
+    const currentFileName = activeFile.filename || '';
+    const dir = activeFile.uri || '';
 
-			if (targetPath) {
-				return {
-					directoryForTagName: targetPath.path,
-					directoryForCurrentFile: currentFilePath ? currentFilePath.path : null,
-				};
-			} else {
-				return {
-					directoryForTagName: null,
-					directoryForCurrentFile: null,
-				};
-			}
-		} catch (error) {
-			console.error('Erro ao encontrar o caminho do cache para o tagName:', error);
-			return {
-				directoryForTagName: null,
-				directoryForCurrentFile: null,
-			};
-		}
-	}
+    console.log('dir', dir); // Log para depuração
 
-	async importIntellisense(tagName, directory) {
-		try {
-			const relativePath = this.calculateRelativePath(directory.directoryForCurrentFile, directory.directoryForTagName);
-			const fileExists = await this.checkIfFileExists(directory.directoryForTagName);
+    const extensions = ['.tsx', '.ts', '.js'];
+    let targetPath;
 
-			if (!fileExists) {
-				window.toast('Component file not found', 4000);
-				return;
-			}
+    for (const ext of extensions) {
+      targetPath = this.directoryPaths[tagName + ext];
+      if (targetPath) break;
+    }
 
-			const extensionIndex = tagName.lastIndexOf('.');
-			const tagNameWithoutExtension = tagName.substring(0, extensionIndex);
-			const importStatement = `import ${tagNameWithoutExtension} from '${relativePath}';`;
+    console.log('targetPath', targetPath); // Log para depuração
 
-			const code = this.editor.session.getValue();
-			const importRegex = new RegExp(`import\\s+${tagNameWithoutExtension}\\s+from\\s+'${relativePath}'`);
+    const currentFilePath = this.directoryPaths[currentFileName];
+    console.log('currentFilePath', currentFilePath); // Log para depuração
 
-			if (!importRegex.test(code)) {
-				const insertionPosition = this.findInsertionPosition();
-				this.editor.session.insert(insertionPosition, `${importStatement}\n`);
-				this.closeTag();
-				window.toast('The import was created at the top ☝️ ', 3000);
-			}
-		} catch (error) {
-			console.error('Erro no importIntellisense:', error);
-			window.toast('Component not found', 4000);
-			await this.getPathsRoot();
-		}
-	}
+    if (targetPath) {
+      return {
+        directoryForTagName: targetPath.path,
+        directoryForCurrentFile: currentFilePath ? currentFilePath.path : null,
+      };
+    } else {
+      return {
+        directoryForTagName: null,
+        directoryForCurrentFile: null,
+      };
+    }
+  } catch (error) {
+    console.error('Erro ao encontrar o caminho do cache para o tagName:', error);
+    return {
+      directoryForTagName: null,
+      directoryForCurrentFile: null,
+    };
+  }
+}
 
-	async checkIfFileExists(path) {
-		try {
-			// Implementação para verificar se o arquivo existe usando o fileList ou outro método apropriado
-			const fileList = acode.require('fileList');
-			const list = await fileList();
-			const fileExists = list.some(item => item.path === path);
-			return fileExists;
-		} catch (error) {
-			console.error('Erro ao verificar a existência do arquivo:', error);
-			return false;
-		}
-	}
+async importIntellisense(tagName, directory) {
+  try {
+    console.log('Directory:', directory); // Log para depuração
 
-	closeTag() {
-		const cp = this.editor.getCursorPosition();
-		this.editor.session.insert(cp, `/>\n`);
-	}
+    const relativePath = this.calculateRelativePath(directory.directoryForCurrentFile, directory.directoryForTagName);
+    console.log('Relative Path:', relativePath); // Log para depuração
 
-	findInsertionPosition() {
-		return { row: 0, column: 0 };
-	}
+    const fileExists = await this.checkIfFileExists(directory.directoryForTagName);
+    console.log('File Exists:', fileExists); // Log para depuração
 
-	calculateRelativePath(currentDirectory, targetDirectory) {
-		const currentPathParts = currentDirectory.split('/');
-		const targetPathParts = targetDirectory.split('/');
+    if (!fileExists) {
+      window.toast('Component file not found', 4000);
+      return;
+    }
 
-		let commonPathLength = 0;
-		while (
-			commonPathLength < currentPathParts.length &&
-			commonPathLength < targetPathParts.length &&
-			currentPathParts[commonPathLength] === targetPathParts[commonPathLength]
-		) {
-			commonPathLength++;
-		}
+    // Extrair o nome do componente do caminho do diretório sem a extensão
+    const componentNameWithExtension = directory.directoryForTagName.split('/').pop();
+    const componentName = componentNameWithExtension.split('.').slice(0, -1).join('.');
 
-		let relativePath = '';
-		if (commonPathLength === currentPathParts.length - 1 && commonPathLength === targetPathParts.length - 1) {
-			relativePath = './' + targetPathParts[targetPathParts.length - 1];
-		} else {
-			for (let i = commonPathLength; i < currentPathParts.length - 1; i++) {
-				relativePath += '../';
-			}
+    // Remover a extensão do caminho relativo
+    const relativePathWithoutExtension = relativePath.split('.').slice(0, -1).join('.');
 
-			if (!relativePath.startsWith('./') && !relativePath.startsWith('../')) {
-				relativePath = './' + relativePath;
-			}
+    const importStatement = `import ${componentName} from '${relativePathWithoutExtension}';`;
 
-			for (let i = commonPathLength; i < targetPathParts.length; i++) {
-				relativePath += targetPathParts[i] + '/';
-			}
+    const code = this.editor.session.getValue();
+    const importRegex = new RegExp(`import\\s+${componentName}\\s+from\\s+'${relativePathWithoutExtension}'`);
 
-			if (relativePath.endsWith('/')) {
-				relativePath = relativePath.slice(0, -1);
-			}
-		}
+    if (!importRegex.test(code)) {
+      const insertionPosition = this.findInsertionPosition();
+      this.editor.session.insert(insertionPosition, `${importStatement}\n`);
+      this.closeTag();
+      window.toast('The import was created at the top ☝️ successfully', 3000);
+      
+      
+    }
+  } catch (error) {
+    console.error('Erro no importIntellisense:', error);
+    window.toast('Component not found', 4000);
+  }
+}
 
-		return relativePath;
-	}
+async checkIfFileExists(path) {
+  try {
+    const fileList = acode.require('fileList');
+    const list = await fileList();
+    const fileExists = list.some(item => item.path === path);
+    return fileExists;
+  } catch (error) {
+    console.error('Erro ao verificar a existência do arquivo:', error);
+    return false;
+  }
+}
 
-	async destroy() {
-		this.editor.off('change', this.handleCodeChange);
-	}
+closeTag() {
+  const cp = this.editor.getCursorPosition();
+  this.editor.session.insert(cp, ' />\n'); 
+}
+
+findInsertionPosition() {
+return { row: 0, column: 0 };
+}
+
+calculateRelativePath(currentDirectory, targetDirectory) {
+const currentPathParts = currentDirectory.split('/');
+const targetPathParts = targetDirectory.split('/');
+
+let commonPathLength = 0;
+while (
+commonPathLength < currentPathParts.length &&
+commonPathLength < targetPathParts.length &&
+currentPathParts[commonPathLength] === targetPathParts[commonPathLength]
+) {
+commonPathLength++;
+}
+
+let relativePath = '';
+if (commonPathLength === currentPathParts.length - 1 && commonPathLength === targetPathParts.length - 1) {
+relativePath = './' + targetPathParts[targetPathParts.length - 1];
+} else {
+for (let i = commonPathLength; i < currentPathParts.length - 1; i++) {
+relativePath += '../';
+}
+
+if (!relativePath.startsWith('./') && !relativePath.startsWith('../')) {
+relativePath = './' + relativePath;
+}
+
+for (let i = commonPathLength; i < targetPathParts.length; i++) {
+relativePath += targetPathParts[i] + '/';
+}
+
+if (relativePath.endsWith('/')) {
+relativePath = relativePath.slice(0, -1);
+}
+}
+
+return relativePath;
+}
+
+async destroy() {
+this.editor.off('change', this.handleCodeChange);
+}
 }
 
 if (window.acode) {
-	const acodePlugin = new AcodePluginRN();
+const acodePlugin = new AcodePluginRN();
 
-	acode.setPluginInit(plugin.id, async (baseUrl, $page, { cacheFileUrl, cacheFile }) => {
-		if (!baseUrl.endsWith('/')) {
-			baseUrl += '/';
-		}
-		acodePlugin.baseUrl = baseUrl;
-		await acodePlugin.init($page, cacheFile, cacheFileUrl);
-	});
+acode.setPluginInit(plugin.id, async (baseUrl, $page, { cacheFileUrl, cacheFile }) => {
+if (!baseUrl.endsWith('/')) {
+baseUrl += '/';
+}
+acodePlugin.baseUrl = baseUrl;
+await acodePlugin.init($page, cacheFile, cacheFileUrl);
+});
 
-	acode.setPluginUnmount(plugin.id, () => {
-		acodePlugin.destroy();
-	});
+acode.setPluginUnmount(plugin.id, () => {
+acodePlugin.destroy();
+});
 }
