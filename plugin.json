@@ -1,5 +1,5 @@
 {
-	"id": "snippets.react.native",
+	"id": "ronilsonrsj.plugin.rn",
 	"name": "Snippets React Native",
 	"main": "dist/main.js",
 	"version": "1.0.3",
@@ -7,9 +7,10 @@
 	"icon": "icon.png",
 	"files": [],
 	"minVersionCode": 290,
+	"autor_verified": 1,
 	"price": 0,
 	"author": {
-		"name": "Ronilson Rsj",
+		"name": "Rsj Roni",
 		"email": "ronilson.stos@gmail.com",
 		"github": "ronilson-users"
 	}

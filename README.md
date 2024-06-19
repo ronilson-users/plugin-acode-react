@@ -1,30 +1,54 @@
-<h1 align="center"> Acode Plugin Snippets RN </h1>
+<h1 align="center"> Snippets React Native
 
-Este plugin implementa funcionalidades de snippets para o editor Acode, visando aumentar a produtividade no desenvolvimento de aplicativos React Native.
-
-<details>
-  <summary>
-    <details>
-    <summary><h4>1.0.1</h4></summary>
-    
-     Fixed plugin load after restart.
-  </details>
-
-</details>
-  
-  <h3>Updates</h3>
-  
-  </summary>
-
-**Updtes**
-
-Fixed plugin load after restart.
+<br />
+<br />
 
 ## Funcionalidades
+<br />
 
-## VERSÂO 1.0.3
+> Snippets React Native , snippets personalizaveis
 
-> Utilização do StyleSheet, Ao utilizar o StyleSheet, é possível definir estilos de forma estruturada, permitindo uma melhor organização e manutenção do código. Este recurso também otimiza o desempenho da aplicação, já que permite que o React Native realize operações de pré-processamento para melhorar a renderização dos estilos.
+> Import Intelisense : Crie seus components e faca a importacao com  tag ``<Mycompontent />`` entao ele criao seu component no top do arquivo 
+<br /> 
+``import Mycomponent from './components/Mycomponent'  ``
+
+<details>
+    <summary>Updates</summary>
+    <br>
+    <details>
+        <summary>
+            <code><strong>v1.0.3</strong></code>
+        </summary>
+        <ul>
+            <li>Import Intelisense</li>
+        </ul>
+    </details>
+    <details>
+        <summary>
+            <code><strong>v1.0.2</strong></code>
+        </summary>
+        <ul>
+            <li>Fixed <code>ul</code> bug</li>
+            <li>Merged pull request: <a href="https://github.com/bajrangCoder/acode-plugin-markdown-styler/pull/1">#1</a></li>
+        </ul>
+    </details>
+    <details>
+        <summary>
+            <code><strong>v1.0.1</strong></code>
+        </summary>
+        <ul>
+            <li>Added markdown previewer for <code>.md</code> files</li>
+        </ul>
+    </details>
+</details>
+
+<br />
+<br />
+
+> Snippets React Native é um plugin para o editor Acode que fornece funcionalidades de snippets e intellisense de importação de componentes especificamente para desenvolvimento em React Native.
+
+
+<br />
 
 ![Imgur](https://i.imgur.com/QhVMwe2.jpg)
 

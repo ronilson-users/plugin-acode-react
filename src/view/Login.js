@@ -1,4 +1,4 @@
-import Input from '../Input/Input';
+import Form from '../components/Form';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -12,13 +12,8 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* Add View content here */}
-      <Input />
-       <View >
-       function
-         
-       </View>
+      <Form />
+
     </View>
-  
-    
   );
 }
