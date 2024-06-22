@@ -1,14 +1,13 @@
-
+import Form from '../components/Form';
 import React from 'react';
-import { Button, View, StyleSheet } from 'react-native';
-
-const MyButton = () => {
+import { View, StyleSheet, Text } from 'react-native';
+                        
+export default function Teste()  {
   return (
     <View style={styles.container}>
-      <Button
-        title="Press me"
-        onPress={() => alert('Button pressed!')}
-      />
+      <Text>Welcome to React Native!</Text>
+      <Form />
+
     </View>
   );
 };
@@ -19,6 +18,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  main: { 
+   backgroundColor: 'red',
+   fontSize: 12,
+  
+  },
 });
 
-export default MyButton;
