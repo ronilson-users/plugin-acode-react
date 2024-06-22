@@ -1,17 +1,12 @@
-<h1 align="center"> Snippets React Native
 
-<br />
-<br />
-
-## Funcionalidades
+![Imgur](https://i.imgur.com/QhVMwe2.jpg)
 <br />
 
-> Snippets React Native , snippets personalizaveis
 
-> Import Intelisense : Crie seus components e faca a importacao com  tag ``<Mycompontent />`` entao ele criao seu component no top do arquivo 
-<br /> 
-``import Mycomponent from './components/Mycomponent'  ``
 
+##
+
+<br />
 <details>
     <summary>Updates</summary>
     <br>
@@ -43,6 +38,23 @@
 </details>
 
 <br />
+
+
+## Snippets
+
+ > O plugin oferece uma série de snippets predefinidos para facilitar a escrita de código no React Native. Alguns dos snippets disponíveis incluem:
+ 
+ <br />
+ 
+![Imgur](https://i.imgur.com/t1gsL8l.jpg)
+
+
+> Import Intelisense : Crie seus components e faca a importacao com  tag ``<Mycompontent />`` entao ele criao seu component no top do arquivo 
+<br /> 
+<code>
+``import Mycomponent from './components/Mycomponent'  ``
+</code>
+
 <br />
 
 > Snippets React Native é um plugin para o editor Acode que fornece funcionalidades de snippets e intellisense de importação de componentes especificamente para desenvolvimento em React Native.
@@ -50,12 +62,7 @@
 
 <br />
 
-![Imgur](https://i.imgur.com/QhVMwe2.jpg)
 
-### Snippets
-
-O plugin oferece uma série de snippets predefinidos para facilitar a escrita de código no React Native. Alguns dos snippets disponíveis incluem:
-![Imgur](https://i.imgur.com/t1gsL8l.jpg)
 
 - Importações rápidas para React e componentes específicos do React Native (como `View`, `Text`, etc.).
 - Estruturas básicas para criação de componentes funcionais em React Native.
