@@ -77,28 +77,28 @@ score: 600
 //
 // Default component
 
-
 {
 prefix: 'rn-export-default-function',
-snippet: `import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+snippet: `
 
-export default function \${1:FILE_NAME}()  {
-return (
-<View style={styles.container}>
-<Text>Welcome to React Native!</Text>
-</View>
-);
-};
-
-const styles = StyleSheet.create({
-container: {
-flex: 1,
-justifyContent: 'center',
-alignItems: 'center',
-},
-});
-
+ import React from 'react';
+ import { View, StyleSheet, Text } from 'react-native';
+ 
+ export default function  \${1:FILE_NAME}()  {
+  return (
+   <View style={styles.container}>
+    <Text>Welcome to React Native!</Text>
+   </View>
+   );
+ };
+ 
+ const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   justifyContent: 'center',
+   alignItems: 'center',
+  },
+ });
 `,
 type: 'snippet RN',
 description: 'Export functional component with styles.',
@@ -106,24 +106,24 @@ score: 600,
 },
 {
 prefix: 'rn-default-component',
-snippet: `
-import React from 'react';
+snippet: `import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const \${1:FILE_NAME} = () => {
-return (
-<View style={styles.container}>
-<Text>Hello, World!$2</Text>
-</View>
-);
+ return (
+  <View style={styles.container}>
+   <Text>Hello, World!</Text>
+  </View>
+  );
 };
 
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-justifyContent: 'center',
-alignItems: 'center',
-},
+ container: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+ },
+ //
 });
 
 export default $1;

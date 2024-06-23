@@ -1,7 +1,7 @@
 {
 	"name": "Snippets React Native",
 	"version": "1.0.3",
-	"description": "Plugin Acode React Native",
+	"description": "Acode React Native Plugin",
 	"main": "dist/main.js",
 	"scripts": {
 		"prettier": "prettier --write .",
@@ -11,7 +11,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/ronilson-users/plugin"
+		"url": "git+https://github.com/ronilson-users/plugin-acode-react.git"
 	},
 	"keywords": [
 		"Plugin",
@@ -21,9 +21,9 @@
 	"author": "Roni<ronilson-users>",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/ronilson-users/plugin/issues"
+		"url": "https://github.com/ronilson-users/plugin-acode-react.git/issues"
 	},
-	"homepage": "https://github.com/ronilson-users/plugin#readme",
+	"homepage": "https://github.com/ronilson-users/plugin-acode-react.git#readme",
 	"devDependencies": {
 		"@babel/cli": "^7.23.0",
 		"@babel/core": "^7.23.3",
