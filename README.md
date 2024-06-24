@@ -36,7 +36,6 @@
 
 ![Imgur](https://imageshack.com/i/pnJqvBGGj)
 
-
 - Quick imports for React and specific React Native components (such as `View`, `Text`, `Button`, etc.).
 - Basic structures for creating functional components in React Native.
 - Predefined constants to expedite writing common code.
@@ -49,12 +48,11 @@ The complete list of available snippets can be found in the [Snippets](#snippets
 
 ```js
 import Mycomponent from './components/Mycomponent';
-
 ```
 
 <br />
 
-## How to UseMake 
+## How to UseMake
 
 1. sure you have the Acode editor installed.
 2. Install this plugin in Acode.
@@ -64,26 +62,24 @@ import Mycomponent from './components/Mycomponent';
 
 <br />
 
-| Prefixo                 | Tipo de Snippet                |
-| ----------------------- | ------------------------------ |
-| rn-    | React Native structures   |
-| im-    | Basic imports             |
-| alin , borde  | Css Properties            |
-| clg-   | Debugging                 |
-
+| Prefixo      | Tipo de Snippet         |
+| ------------ | ----------------------- |
+| rn-          | React Native structures |
+| im-          | Basic imports           |
+| alin , borde | Css Properties          |
+| clg-         | Debugging               |
 
 <br />
 
-
 ## Contributions
-1. Contributions for new snippets or improvements are welcome! 
+
+1. Contributions for new snippets or improvements are welcome!
 2. Feel free to propose new features or enhancements for this plugin.
 3. Fork the repository.Create a branch for your changes (git checkout -b feature/new-feature).
 4. Commit your changes (git commit -am 'Add new feature').
 5. Push to the branch (git push origin feature/new-feature).Create a new Pull Request.
 
 <br />
-
 
 ## Author : RsjRoni
 
