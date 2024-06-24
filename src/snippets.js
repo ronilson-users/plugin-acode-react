@@ -11,7 +11,10 @@ snippet: "import React from 'react';",
 type: 'snippet RN',
 description: 'Import React in React Native',
 },
-{ prefix: 'im-import', snippet: "import { ${1:component} } from 'react-native';", type: 'snippet RN', description: 'Import from React Native', },
+{ prefix: 'im-import', 
+ snippet: "import { ${1:component} } from 'react-native';", 
+ type: 'snippet RN', 
+ description: 'Import from React Native', },
 {
 prefix: 'im-useState',
 snippet: "import { useState } from 'react';",
@@ -74,8 +77,39 @@ description: 'Import common components and StyleSheet from React Native',
 score: 600
 },
 
-//
 // Default component
+
+{
+ 
+ prefix: 'rn-component-AsyncStorage',
+ snippet: `
+ import AsyncStorage from '@react-native-async-storage/async-storage';
+// npm package 
+
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('@storage_Key', value);
+  } catch (e) {
+    // saving error
+  }
+};
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@storage_Key');
+    if(value !== null) {
+      // value previously stored
+    }
+  } catch(e) {
+    // error reading value
+  }
+};
+ 
+ `,
+ type: 'snippet Dev.',
+ description: 'AsyncStorage component',
+ 
+},
 
 {
 prefix: 'rn-export-default-function',
@@ -104,8 +138,9 @@ type: 'snippet RN',
 description: 'Export functional component with styles.',
 score: 600,
 },
-{
-prefix: 'rn-default-component',
+
+// Component Export Default
+{ prefix: 'rn-default-component',
 snippet: `import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -132,6 +167,7 @@ type: 'snippet RN',
 description: 'Basic functional component with styles.',
 score: 600,
 },
+
 // Use useState
 {
 prefix: 'rn-usestate',
@@ -141,12 +177,12 @@ import { View, Text, Button } from 'react-native';
 
 const Counter$1 = () => {
 const [count, setCount] = useState(0);
-
-return (
-<View>
-<Text>{count}</Text>
-<Button title="Increment" onPress={() => setCount(count + 1)} />
-</View>
+ 
+ return (
+  <View>
+   <Text>{count}</Text>
+    <Button title="Increment" onPress={() => setCount(count + 1)} />
+  </View>
 );
 };
 
@@ -163,14 +199,14 @@ snippet: `
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 
-const FetchData$1 = () => {
-const [data, setData] = useState(null);
-
-useEffect(() => {
-fetch('https://jsonplaceholder.typicode.com/posts/1')
-.then(response => response.json())
-.then(json => setData(json));
-}, []);
+  const FetchData$1 = () => {
+  const [data, setData] = useState(null);
+  
+    useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts/1')
+    .then(response => response.json())
+    .then(json => setData(json));
+    }, []);
 
 return (
 <View>
@@ -195,14 +231,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Button, View, Text } from 'react-native';
 
 const HomeScreen$1 = ({ navigation }) => {
-return (
-<View>
-<Text>Home Screen</Text>
-<Button
-title="Go to Details"
-onPress={() => navigation.navigate('Details')}
-/>
-</View>
+   return (
+     <View>
+       <Text>Home Screen</Text>
+         <Button
+         title="Go to Details"
+         onPress={() => navigation.navigate('Details')}
+         />
+     </View>
 );
 };
 
@@ -241,12 +277,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const StyledComponent$1 = () => {
-return (
-<View style={styles.container}>
-<Text style={styles.text}>Hello, World with Styles!$2</Text>
-</View>
-);
-};
+   return (
+     <View style={styles.container}>
+       <Text style={styles.text}>Hello, World with Styles!$2</Text>
+     </View>
+   );
+   };
 
 const styles = StyleSheet.create({
 container: {
@@ -276,19 +312,19 @@ import { View, TextInput, Text, StyleSheet } from 'react-native';
 
 const InputComponent$1 = () => {
 const [text$2, setText$3] = useState('');
-
-return (
-<View style={styles.container}>
-<TextInput
-style={styles.input}
-placeholder="Type something..."
-onChangeText={setText}
-value={text}
-/>
-<Text>{text}</Text>
-</View>
-);
-};
+   
+   return (
+     <View style={styles.container}>
+       <TextInput
+       style={styles.input}
+       placeholder="Type something..."
+       onChangeText={setText}
+       value={text}
+       />
+       <Text>{text}</Text>
+     </View>
+   );
+   };
 
 const styles = StyleSheet.create({
 container: {
@@ -322,19 +358,19 @@ const DATA = [
 ];
 
 const Item$1 = ({ title }) => (
-<View style={styles.item}>
-<Text style={styles.title}>{title}</Text>
-</View>
+   <View style={styles.item}>
+   <Text style={styles.title}>{title}</Text>
+   </View>
 );
 
 const MyList$2 = () => {
-return (
-<FlatList
-data={DATA}
-renderItem={({ item }) => <Item title={item.title} />}
-keyExtractor={item => item.id}
-/>
-);
+   return (
+     <FlatList
+     data={DATA}
+     renderItem={({ item }) => <Item title={item.title} />}
+     keyExtractor={item => item.id}
+     />
+   );
 };
 
 const styles = StyleSheet.create({
@@ -363,15 +399,15 @@ import React from 'react';
 import { Button, View, StyleSheet } from 'react-native';
 
 const MyButton$1 = () => {
-return (
-<View style={styles.container}>
-<Button
-title="Press me"
-onPress={() => alert('Button pressed!')}
-/>
-</View>
-);
-};
+  return (
+    <View style={styles.container}>
+      <Button
+      title="Press me"
+      onPress={() => alert('Button pressed!')}
+      />
+    </View>
+  );
+  };
 
 const styles = StyleSheet.create({
 container: {
@@ -395,13 +431,13 @@ import React from 'react';
 import { ScrollView, Text, StyleSheet } from 'react-native';
 
 const MyScrollView$1 = () => {
-return (
-<ScrollView style={styles.container}>
-<Text style={styles.text}>Scroll me!</Text>
-<Text style={styles.text}>More content...</Text>
-<Text style={styles.text}>Even more content...</Text>
-</ScrollView>
-);
+  return (
+  <ScrollView style={styles.container}>
+    <Text style={styles.text}>Scroll me!</Text>
+    <Text style={styles.text}>More content...</Text>
+    <Text style={styles.text}>Even more content...</Text>
+  </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -429,14 +465,14 @@ import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 
 const MyImage$1 = () => {
-return (
-<View style={styles.container}>
-<Image
-source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-style={styles.image}
-/>
-</View>
-);
+   return (
+     <View style={styles.container}>
+     <Image
+     source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+     style={styles.image}
+     />
+     </View>
+   );
 };
 
 const styles = StyleSheet.create({
@@ -457,52 +493,16 @@ type: 'snippet RN',
 description: 'Component with an Image.',
 score: 600,
 },
-
-// JavaScript
+// Text
 {
-prefix: 'obj-properties',
-snippet: `const $1 = {
-name: 'String',
-age: 0,
-};`,
-type: 'snippet',
-description: 'Create a JavaScript object with default properties',
+
+prefix: 'Text',
+snippet: ` <Text>Welcome to React Native!$1</Text>`,
+type: 'snippet Dev.',
+description: 'Create Text',
+
 },
 
-{
-prefix: 'arrow-function',
-snippet: 'const $1 = ($2) => {\n  $3\n};',
-type: 'snippet RN',
-description: 'Create an arrow function with parameters',
-},
-
-{
-prefix: 'map-function',
-snippet: 'const ${1:transformedArray} = ${2:array}.map((${3:item}) => {\n  $4\n});',
-type: 'snippet RN',
-description: 'Create a map function in JavaScript',
-},
-
-{
-prefix: 'const-persona',
-snippet: "const ${1:Persona} = {\n  name: 'String',\n  age: 0,\n};",
-type: 'snippet RN',
-description: 'Snippet to create an object in JavaScript',
-},
-
-{
-prefix: 'ternary-operator',
-snippet: 'const $1 = $2 ? $3 : $4;',
-type: 'snippet RN',
-description: 'Create a ternary operator in JavaScript',
-},
-
-{
-prefix: 'try-catch-block',
-snippet: 'try {\n  $1\n} catch (error) {\n  $2\n}',
-type: 'snippet RN',
-description: 'Create a try-catch block in JavaScript',
-},
 // Hooks
 {
 prefix: 'rn-usestate-hook',
@@ -537,7 +537,6 @@ snippet: 'style={styles.$1}',
 type: 'snippet RN',
 description: 'Add style in React Native  StyleSheet',
 },
-
 
 /*
   logs
@@ -592,7 +591,6 @@ snippet: "console.time('$1');\n$2\nconsole.timeEnd('$1');",
 type: 'snippet log',
 description: 'Time console log',
 },
-
 // Table log for array of objects
 {
 prefix: 'clg-tb',
@@ -600,7 +598,6 @@ snippet: 'console.table($1);',
 type: 'snippet log',
 description: 'Table console log for array of objects',
 },
-
 // Snippets Express
 {
 prefix: "exp-create-app",
@@ -672,25 +669,6 @@ type: "snippet Express",
 decription: "Iniciar o servidor"
 },
 
-
-
-// Lifecycle Methods
-{
-prefix: 'rn-componentdidmount',
-snippet: 'componentDidMount() { $1 }',
-type: 'snippet RN',
-description: 'Add in snippet for componentDidMount',
-},
-// Testes
-{
-prefix: 'rn-tecase',
-snippet: `test('$1', () => {
-// Sua lógica de teste aqui
-});`,
-type: 'snippet RN',
-description: 'Criar um snippet para uma estrutura básica de teste',
-},
-
 // TouchableOpacity
 {
 prefix: 'TouchableOpacity',
@@ -705,6 +683,7 @@ snippet: '<SafeAreaView style={$1}>\n  $2\n</SafeAreaView>',
 type: 'snippet RN',
 description: 'Create SafeAreaView in React Native',
 },
+
 // FlatList
 {
 prefix: 'FlatList',
@@ -716,6 +695,7 @@ keyExtractor={(item) => item.id.toString()}
 type: 'snippet RN',
 description: 'Create FlatList in React Native',
 },
+
 // ScrollView
 {
 prefix: 'ScrollView',
@@ -723,6 +703,7 @@ snippet: '<ScrollView style={$1}>\n  $2\n</ScrollView>',
 type: 'snippet RN',
 description: 'Create ScrollView in React Native',
 },
+
 // TextInput
 {
 prefix: 'TextInput',
@@ -734,21 +715,76 @@ value={$3}
 type: 'snippet RN',
 description: 'Create TextInput in React Native',
 },
+
 // Pressable
 {
-prefix: 'Pressable',
+prefix: 'rn-pressable',
 snippet: '<Pressable onPress={$1}>\n  $2\n</Pressable>',
 type: 'snippet RN',
 description: 'Create Pressable in React Native',
 },
+
 // View
 {
-prefix: 'View',
+prefix: 'rn-View',
 snippet: '<View $1>\n  $2\n</View>',
 type: 'snippet RN',
 description: 'Create View in React Native',
 },
 
+// Button
+{
+prefix: 'btn-button',
+snippet: `      <Button
+title="Press me"
+onPress={() => alert('Button pressed!')}
+/>`,
+type: 'snippet Dev.',
+description: 'Create Button Simple',
+},
+
+// Style Import
+{
+prefix: 'rn-export-styles',
+snippet: `import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+componentNme$1: {
+backgroundColor: '#007BFF',
+padding: 10,
+borderRadius: 5,
+alignItems: 'center',
+},
+text: {
+color: '#FFFFFF',
+fontSize: 16,
+},
+});
+
+export default styles;`,
+type: 'snippet Dev.',
+description: 'Adicionar estilo nomeSn para um componente',
+},
+
+//Create StyleSheet
+{
+
+prefix: 'create-style',
+snippet: `const styles = StyleSheet.create({
+conatiner$1: {
+backgroundColor: '#007BFF',
+padding: 10,
+borderRadius: 5,
+alignItems: 'center',
+},
+text: {
+color: '#FFFFFF',
+fontSize: 16,
+},
+});`,
+type: 'snippet Dev.',
+description: 'Adicionar StyleSheet',
+},
 
 /*
   Criar Style para StyleSheet RN
@@ -824,7 +860,6 @@ snippet: "borderWidth: $1,",
 type: 'snippet Prop.',
 description: 'Add borderWidth style (number) to a component',
 },
-
 // borderEndWidth - number
 {
 prefix: 'borderEndWidth',
@@ -881,7 +916,7 @@ snippet: 'flexBasis: $1,',
 type: 'snippet Prop.',
 description: 'Add flexBasis style (number) to a component',
 },
-// Flex Direction
+// Flex Direction Teste
 {
 prefix: 'flexDirection',
 snippet: "flexDirection: '$1',",
@@ -895,7 +930,6 @@ body: [
 ],
 score: 750,
 },
-
 // Flex Grow - number
 {
 prefix: 'flexGrow',
@@ -973,7 +1007,6 @@ snippet: 'insetInlineStart: $1,',
 type: 'snippet Prop.',
 description: 'Add insetInlineStart style (number) to a component',
 },
-
 // justifyContent
 {
 prefix: 'justifyContent',
@@ -1121,7 +1154,6 @@ snippet: 'minWidth: $1,',
 type: 'snippet Prop.',
 description: 'Add minWidth style to a component',
 },
-
 // Overflow
 {
 prefix: 'overflow',
@@ -1269,7 +1301,6 @@ snippet: "backgroundColor: '$1',",
 type: 'snippet Prop.',
 description: 'Add backgroundColor style to a component',
 },
-
 // borderBottomColor
 {
 prefix: 'borderBottomColor',
@@ -1586,8 +1617,6 @@ type: 'snippet Prop.',
 description: 'Add verticalAlign style to a component',
 },
 // writingDirection
-
-
 {
 prefix: 'writingDirection',
 snippet: "writingDirection: '$1',",
@@ -1595,7 +1624,11 @@ type: 'snippet Prop.',
 description: 'Add writingDirection style to a component',
 },
 
-// Snippets Express
+/**
+ Express Snippets
+ */
+ 
+ // Snippets Express
 {
 prefix: 'exp-create-app',
 snippet: 'const app = express();',
@@ -1624,49 +1657,44 @@ type: 'snippet Express',
 description: 'Definir rota DELETE no Express',
 },
 
-
+// JavaScript
 {
-
-prefix: 'rn-export-styles',
-snippet: `import { StyleSheet } from 'react-native';
-
-const styles = StyleSheet.create({
-componentNme$1: {
-backgroundColor: '#007BFF',
-padding: 10,
-borderRadius: 5,
-alignItems: 'center',
-},
-text: {
-color: '#FFFFFF',
-fontSize: 16,
-},
-});
-
-export default styles;`,
-type: 'snippet Dev.',
-description: 'Adicionar estilo nomeSn para um componente',
+prefix: 'const-obj-properties',
+snippet: `const $1 = {
+name: 'String',
+age: 0,
+};`,
+type: 'snippet',
+description: 'Create a JavaScript object with default properties',
 },
 
 {
-
-prefix: 'create-style',
-snippet: `const styles = StyleSheet.create({
-conatiner$1: {
-backgroundColor: '#007BFF',
-padding: 10,
-borderRadius: 5,
-alignItems: 'center',
-},
-text: {
-color: '#FFFFFF',
-fontSize: 16,
-},
-});`,
-type: 'snippet Dev.',
-description: 'Adicionar StyleSheet',
+prefix: 'const-arrow-function',
+snippet: 'const $1 = ($2) => {\n  $3\n};',
+type: 'snippet RN',
+description: 'Create an arrow function with parameters',
 },
 
+{
+prefix: 'const-persona',
+snippet: "const ${1:Persona} = {\n  name: 'String',\n  age: 0,\n};",
+type: 'snippet RN',
+description: 'Snippet to create an object in JavaScript',
+},
+
+{
+prefix: 'const-ternary-operator',
+snippet: 'const $1 = $2 ? $3 : $4;',
+type: 'snippet RN',
+description: 'Create a ternary operator in JavaScript',
+},
+
+{
+prefix: 'try-catch-block',
+snippet: 'try {\n  $1\n} catch (error) {\n  $2\n}',
+type: 'snippet RN',
+description: 'Create a try-catch block in JavaScript',
+},
 
 // properties Dev
 {
@@ -1674,17 +1702,6 @@ prefix: 'pro-style',
 snippet: '$1: { \n $2\n\n},',
 type: 'snippet Dev.',
 description: 'Adicionar estilo nomeSn para um componente',
-},
-
-{
-
-prefix: 'btn-button',
-snippet: `      <Button
-title="Press me"
-onPress={() => alert('Button pressed!')}
-/>`,
-type: 'snippet Dev.',
-description: 'Create Button Simple',
 },
 
 {

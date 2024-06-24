@@ -1,4 +1,4 @@
-# Snippets React Native
+<h1 align="center">  Snippets React Native </h1>
 
 > Snippets React Native is a plugin for the Acode editor that provides snippet functionalities and IntelliSense for importing components, specifically for React Native development. The plugin implements an autocomplete functionality for snippets, automatically suggesting code completion options based on the available snippets.
 
@@ -32,7 +32,10 @@
 
 > The plugin offers a series of predefined snippets to facilitate writing code in React Native. Some of the available snippets include:
 
-![Snippets Example](https://i.imgur.com/t1gsL8l.jpg)
+<br />
+
+![Imgur](https://imageshack.com/i/pnJqvBGGj)
+
 
 - Quick imports for React and specific React Native components (such as `View`, `Text`, `Button`, etc.).
 - Basic structures for creating functional components in React Native.
@@ -48,4 +51,40 @@ The complete list of available snippets can be found in the [Snippets](#snippets
 import Mycomponent from './components/Mycomponent';
 
 ```
-#
+
+<br />
+
+## How to UseMake 
+
+1. sure you have the Acode editor installed.
+2. Install this plugin in Acode.
+3. While typing code in a React Native file, use the configured snippet prefixes to quickly access predefined code snippets.
+
+> Available Snippets
+
+<br />
+
+| Prefixo                 | Tipo de Snippet                |
+| ----------------------- | ------------------------------ |
+| rn-    | React Native structures   |
+| im-    | Basic imports             |
+| alin , borde  | Css Properties            |
+| clg-   | Debugging                 |
+
+
+<br />
+
+
+## Contributions
+1. Contributions for new snippets or improvements are welcome! 
+2. Feel free to propose new features or enhancements for this plugin.
+3. Fork the repository.Create a branch for your changes (git checkout -b feature/new-feature).
+4. Commit your changes (git commit -am 'Add new feature').
+5. Push to the branch (git push origin feature/new-feature).Create a new Pull Request.
+
+<br />
+
+
+## Author : RsjRoni
+
+<br />
