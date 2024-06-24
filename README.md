@@ -1,6 +1,10 @@
+![imageshack](https://imageshack.com/i/pmztoO1Ej)
+<br />
 <h1 align="center">  Snippets React Native </h1>
 
 > Snippets React Native is a plugin for the Acode editor that provides snippet functionalities and IntelliSense for importing components, specifically for React Native development. The plugin implements an autocomplete functionality for snippets, automatically suggesting code completion options based on the available snippets.
+
+
 
 ## Updates
 
@@ -34,11 +38,26 @@
 
 <br />
 
-![Imgur](https://imageshack.com/i/pnJqvBGGj)
+![imageshack](https://imageshack.com/i/pok7wHIwj)
+
+<br />
+
+## Features: CSS Properties for React Native
+
+<br />
+
+![imageshack](https://imageshack.com/i/powcy42bj)
+
+<br />
 
 - Quick imports for React and specific React Native components (such as `View`, `Text`, `Button`, etc.).
 - Basic structures for creating functional components in React Native.
 - Predefined constants to expedite writing common code.
+
+<br />
+
+![imageshack](https://imageshack.com/i/pnPHx2zxj)
+
 
 The complete list of available snippets can be found in the [Snippets](#snippets) section.
 
@@ -49,10 +68,11 @@ The complete list of available snippets can be found in the [Snippets](#snippets
 ```js
 import Mycomponent from './components/Mycomponent';
 ```
+![imageshack](https://imageshack.com/i/pn28Bl1Gj)
 
 <br />
 
-## How to UseMake
+## How to Use
 
 1. sure you have the Acode editor installed.
 2. Install this plugin in Acode.
