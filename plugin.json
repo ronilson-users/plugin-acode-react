@@ -1,5 +1,5 @@
 {
-	"id": "ronilsonrsj.plugin.rn",
+	"id": "ronilsonrsj.rn.plugin",
 	"name": "Snippets React Native",
 	"main": "dist/main.js",
 	"version": "1.0.3",
