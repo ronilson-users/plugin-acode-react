@@ -12,7 +12,7 @@ const { snippetManager } = ace.require('ace/snippets');
 
 class AcodePlugin {
 	constructor() {
-		console.log('AcodePlugin constructor');
+
 		this.editor = editor;
 		this.snippetManager = snippetManager;
 		this.directoryPaths = {};
@@ -28,19 +28,14 @@ class AcodePlugin {
 					path: item.path,
 				};
 			}
-			console.log('Directory Paths:', this.directoryPaths);
+			
 		} catch (error) {
 			console.error('Error fetching root file paths:', error);
 		}
 	}
 
-	async init(baseUrl, $page, cacheFileUrl, cacheFile) {
-		console.log('AcodePlugin init');
-		console.log('baseUrl:', baseUrl);
-		console.log('page:', $page);
-		console.log('cacheFileUrl:', cacheFileUrl);
-		console.log('cacheFile:', cacheFile);
-
+	async init() {
+	
 		const style = document.createElement('style');
 		style.id = 'helpDescription';
 		style.innerHTML = `
@@ -53,9 +48,7 @@ class AcodePlugin {
   font-size: 10px; 
   padding: 5px; 
   border-radius: 2px; 
-}
-
-`;
+}`;
 
 		document.head.append(style);
 
@@ -69,7 +62,6 @@ class AcodePlugin {
 
 	// Insere o completador de snippets personalizados no editor
 	insertSnippets() {
-		console.log('insertSnippets');
 
 		// Registrar snippets para JavaScript
 		this.snippetManager.register(snippets, 'javascript');
@@ -85,22 +77,19 @@ class AcodePlugin {
 	}
 
 	setupSnippets() {
-		console.log('setupSnippets');
+		
 		// Adiciona o completador de snippets personalizados ao editor
 		this.editor.completers.push(this);
 	}
 
 	// Obtém sugestões de autocompletar para o editor com base no prefixo
 	getCompletions(editor, session, pos, prefix, callback) {
-		console.log('getCompletions called');
-
+	
 		const { activeFile } = editorManager;
 
-		console.log('activeFile:', activeFile);
+		
 
 		const fileExtension = activeFile.filename.split('.').pop();
-
-		console.log('fileExtension:', fileExtension);
 
 		// Somente fornece sugestões se a extensão do arquivo for adequada para React Native
 		const validExtensions = ['tsx', 'ts', 'js', 'jsx'];
@@ -112,21 +101,17 @@ class AcodePlugin {
 		}
 
 		const cursor = editor.getCursorPosition();
-		console.log('cursor:', cursor);
-
+	
 		const line = session.getLine(cursor.row);
-		console.log('line:', line);
-
+	
 		const lastWord = this.getLastWord(editor);
-		console.log('lastWord:', lastWord);
-
+	
 		const matchedSnippets = snippets.filter(snippet => snippet.prefix.startsWith(lastWord));
 		console.log('matchedSnippets:', matchedSnippets);
 
 		if (matchedSnippets.length > 0 && matchedSnippets[0].prefix !== lastWord) {
 			const fileName = activeFile.filename.split('/').pop().split('.').slice(0, -1).join('.'); // Obtém o nome do arquivo sem extensão
-			console.log('fileName:', fileName);
-
+		
 			const suggestions = matchedSnippets.map(snippet => ({
 				caption: snippet.prefix,
 				snippet: snippet.snippet.replace(/FILE_NAME/g, fileName),
@@ -136,8 +121,6 @@ class AcodePlugin {
 				score: 600 || '',
 				docHTML: snippet.description || '',
 			}));
-
-			console.log('suggestions:', suggestions);
 
 			if (typeof extraSyntaxHighlightsInstalled !== 'undefined' && extraSyntaxHighlightsInstalled) {
 				suggestions.forEach(suggestion => (suggestion.icon = 'icon ace_completion-icon ace_snippet'));
@@ -152,13 +135,13 @@ class AcodePlugin {
 
 	// Obtém a última palavra na posição do cursor no editor
 	getLastWord(editor) {
-		console.log('getLastWord');
+	
 		const cursor = editor.getCursorPosition();
-		console.log('cursor:', cursor);
+		
 		const line = editor.session.getLine(cursor.row);
-		console.log('line:', line);
+		
 		const words = line.substr(0, cursor.column).trim().split(/\s+/);
-		console.log('words:', words);
+
 		return words.length ? words[words.length - 1] : '';
 	}
 
@@ -174,7 +157,7 @@ class AcodePlugin {
 		if (openCol !== -1) {
 			const tagName = this.extractTag(mainRow, openCol);
 
-			console.log('Tag Name:', tagName);
+		
 
 			await this.getRootFilesPaths();
 
@@ -189,15 +172,12 @@ class AcodePlugin {
 	// configure import component React Native
 	async setupImportReactComponent(tagName, directory) {
 		try {
-			console.log('Directory:', directory);
-
+	
 			const relativePath = this.calculateRelativePath(directory.directoryForCurrentFile, directory.directoryForTagName);
-			console.log('Relative Path:', relativePath);
 
 			const fileExists = await this.checkIfFileExists(directory.directoryForTagName);
 
-			console.log('File Exists:', fileExists);
-
+	
 			if (!fileExists) {
 				window.toast('Component file not found', 4000);
 				return;
@@ -245,10 +225,9 @@ class AcodePlugin {
 				if (targetPath) break;
 			}
 
-			console.log('targetPath:', targetPath);
-
+	
 			const currentFilePath = this.directoryPaths[currentFileName];
-			console.log('currentFilePath:', currentFilePath);
+
 
 			return {
 				directoryForTagName: targetPath ? targetPath.path : null,
@@ -351,7 +330,7 @@ class AcodePlugin {
 	}
 
 	async destroy() {
-		console.log('AcodePlugin destroy');
+	this.editor.off('change', this.handleCodeChange);
 		// Clean up if necessary
 	}
 }
