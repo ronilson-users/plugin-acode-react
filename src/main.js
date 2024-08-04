@@ -99,7 +99,8 @@ class AcodePlugin {
 		const lastWord = this.getLastWord(editor);
 
 		const matchedSnippets = snippets.filter(snippet => snippet.prefix.startsWith(lastWord));
-		console.log('matchedSnippets:', matchedSnippets);
+		
+		
 
 		if (matchedSnippets.length > 0 && matchedSnippets[0].prefix !== lastWord) {
 			const fileName = activeFile.filename.split('/').pop().split('.').slice(0, -1).join('.'); // Obtém o nome do arquivo sem extensão
@@ -204,7 +205,7 @@ class AcodePlugin {
 			// Current File Name
 			const currentFileName = activeFile.filename || '';
 
-			const extensions = ['.tsx', '.ts', '.js'];
+			const extensions = ['.tsx', '.ts', '.js', 'jsx'];
 			let targetPath;
 
 			for (const ext of extensions) {
@@ -321,17 +322,17 @@ class AcodePlugin {
 }
 
 if (window.acode) {
-	console.log('Initializing AcodePlugin');
+
 	const acodePlugin = new AcodePlugin();
 	acode.setPluginInit(plugin.id, async (baseUrl, $page, { cacheFileUrl, cacheFile }) => {
-		console.log('Plugin init callback');
+
 		if (!baseUrl.endsWith('/')) {
 			baseUrl += '/';
 		}
 		await acodePlugin.init(baseUrl, $page, cacheFileUrl, cacheFile);
 	});
 	acode.setPluginUnmount(plugin.id, () => {
-		console.log('Plugin unmount callback');
+	
 		acodePlugin.destroy();
 	});
 }

@@ -76,7 +76,7 @@ export const snippets = [
 		description: 'Import common components and StyleSheet from React Native',
 		score: 600,
 	},
-
+justifyContent
 	// Default component
 
 	{
